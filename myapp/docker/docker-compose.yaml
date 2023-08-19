@@ -1,0 +1,7 @@
+services:
+  web:
+    ports:
+      - "4000:3000"
+    image: "lgracia/dev:testnode"
+    deploy:
+      replicas: 5

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-service
+  namespace: default
+  labels:
+    app: web-service
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: web-service
+  template:
+    metadata:
+      labels:
+        app: web-service
+    spec:
+      containers:
+      - name: web-service
+        image: lgracia/dev:testnode
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 150m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        env:
+        - name: NODE_ENV
+          value: ENVIRONMENT_MC
+        ports:
+        - containerPort: 3000
