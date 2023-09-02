@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: aplicacion-web-estatica2
+  name: aplicacion-web-estatica
   labels:
     role: admin
 spec:
