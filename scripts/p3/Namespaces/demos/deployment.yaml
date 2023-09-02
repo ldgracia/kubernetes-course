@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
       - name: hello-world
-        image: gcr.io/google-samples/hello-app:1.0
+        image: lgracia/dev:testnode
         ports:
         - containerPort: 8080
