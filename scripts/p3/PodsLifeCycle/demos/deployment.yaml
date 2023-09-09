@@ -15,5 +15,10 @@ spec:
       containers:
       - name: hello-world
         image: lgracia/dev:testnode
+        env:
+        - name: DEMO_GREETING
+          value: "Hello from the environment"
+        - name: DEMO_FAREWELL
+          value: "Such a sweet sorrow"
         ports:
         - containerPort: 3000
