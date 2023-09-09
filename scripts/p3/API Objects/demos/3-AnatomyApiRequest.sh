@@ -48,8 +48,8 @@ kubectl logs hello-world
 kubectl logs hello-world -v 6
 
 #Start kubectl proxy, we can access the resource URL directly.
-kubectl proxy &
-curl http://localhost:8084/api/v1/namespaces/default/pods/hello-world/log 
+kubectl proxy --port=8084 &
+curl http://localhost:8084/api/v1/namespaces/default/pods/hello-world 
 
 #Kill our kubectl proxy, fg then ctrl+c
 fg
