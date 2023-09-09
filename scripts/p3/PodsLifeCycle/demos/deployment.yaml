@@ -16,4 +16,4 @@ spec:
       - name: hello-world
         image: lgracia/dev:testnode
         ports:
-        - containerPort: 8080
+        - containerPort: 3000
