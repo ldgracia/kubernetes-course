@@ -7,18 +7,10 @@ spec:
   rules:
     - host: path.example.com
       http:
-        paths:
-        - path: /red
-          pathType: Prefix
-          backend:
-            service:
-              name: hello-world-service-red
-              port: 
-                number: 4242
-        - path: /blue
+        - path: /v1/hello
           pathType: Exact
           backend:
             service:
-              name: hello-world-service-blue
+              name: hello-world-clusterip
               port: 
-                number: 4343
+                number: 80
