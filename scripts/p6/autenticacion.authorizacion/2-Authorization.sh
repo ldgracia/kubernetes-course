@@ -35,5 +35,5 @@ exit
 #Clean up from this demo
 kubectl delete deployment nginx
 kubectl delete serviceaccount mysvcaccount1
-kubectl delete role demorole 
-kubectl delete rolebinding demorolebinding 
+kubectl delete role demorolesvc 
+kubectl delete rolebinding demorolebindingsvc 

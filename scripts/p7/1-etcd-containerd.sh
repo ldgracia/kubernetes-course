@@ -1,7 +1,7 @@
 
 #Check out some of the key etcd configuration information
 #Container image and tag, command, --data dir, and mounts and volumes for both etcd-certs and etcd-data
-kubectl describe pod etcd-c1-cp1 -n kube-system
+kubectl describe pod etcd-master -n kube-system
 
 
 #The configuration for etcd comes from the static pod manifest, check out the listen-client-urls, data-dir, volumeMounts, volumes/
@@ -17,8 +17,8 @@ ps -aux | grep etcd
 #Let's get etcdctl on our local system here...by downloading it from github.
 #TODO: Update RELEASE to match your release version!!!
 #We can find out the version of etcd we're running by using etcd --version inside the etcd pod.
-kubectl exec -it etcd-c1-cp1 -n kube-system -- /bin/sh -c 'ETCDCTL_API=3 /usr/local/bin/etcd --version' | head
-export RELEASE="3.5.1"
+kubectl exec -it etcd-master -n kube-system -- /bin/sh -c 'ETCDCTL_API=3 /usr/local/bin/etcd --version' | head
+export RELEASE="3.4.13"
 wget https://github.com/etcd-io/etcd/releases/download/v${RELEASE}/etcd-v${RELEASE}-linux-amd64.tar.gz
 tar -zxvf etcd-v${RELEASE}-linux-amd64.tar.gz
 cd etcd-v${RELEASE}-linux-amd64
@@ -84,14 +84,18 @@ sudo crictl --runtime-endpoint unix:///run/containerd/containerd.sock ps | grep 
 CONTAINER_ID=$(sudo crictl --runtime-endpoint unix:///run/containerd/containerd.sock ps  | grep etcd | awk '{ print $1 }')
 echo $CONTAINER_ID
 
+sudo docker ps | grep etcd
+CONTAINER_ID=$(sudo docker ps   | grep etcd | awk '{ print $1 }')
+echo $CONTAINER_ID
+
 
 #Stop the etcd container for our etcd pod and move our restored data into place
-sudo crictl --runtime-endpoint unix:///run/containerd/containerd.sock stop $CONTAINER_ID
+sudo docker stop $CONTAINER_ID
 sudo mv ./default.etcd /var/lib/etcd
 
 
 #Wait for etcd, the scheduler and controller manager to recreate
-sudo crictl --runtime-endpoint unix:///run/containerd/containerd.sock ps
+sudo docker ps
 
 
 
@@ -130,7 +134,7 @@ sudo vi /etc/kubernetes/manifests/etcd.yaml
 
 
 #This will cause the control plane pods to restart...let's check it at the container runtime level
-sudo crictl --runtime-endpoint unix:///run/containerd/containerd.sock ps
+sudo docker ps
 
 
 #Is our secret back?
