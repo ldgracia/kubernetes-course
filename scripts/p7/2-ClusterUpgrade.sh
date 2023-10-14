@@ -14,7 +14,7 @@ kubectl get nodes
 #Replace the version with the version you want to upgrade to.
 sudo apt-mark unhold kubeadm
 sudo apt-get update
-sudo apt-get install -y kubeadm=1.22.5-00
+sudo apt-get install -y kubeadm=1.21.14-00
 sudo apt-mark hold kubeadm
 
 
@@ -23,13 +23,13 @@ kubeadm version
 
 
 #Next, Drain any workload on the Control Plane Node node
-kubectl drain c1-cp1 --ignore-daemonsets
+kubectl drain master --ignore-daemonsets
 
 
 #Run upgrade plan to test the upgrade process and run pre-flight checks
 #Highlights additional work needed after the upgrade, such as manually updating the kubelets
 #And displays version information for the control plan components
-sudo kubeadm upgrade plan v1.22.5
+sudo kubeadm upgrade plan v1.21.14
 
 
 #Run the upgrade, you can get this from the previous output.
@@ -48,7 +48,7 @@ sudo kubeadm upgrade apply v1.22.5  #<---this format is different than the packa
 
 
 #Uncordon the node
-kubectl uncordon c1-cp1 
+kubectl uncordon master 
 
 
 #Now update the kubelet and kubectl on the control plane node(s)
