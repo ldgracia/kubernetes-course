@@ -1,0 +1,1 @@
+liquibase  --driver=com.mysql.jdbc.Driver  --classpath=D:\develop\tools\liquibase-4.24.0\lib\mysql-connector-java-5.0.8.jar  --changeLogFile=D:\develop\axity\testapp\scripts\bonus\database\changelog.xml   --url="jdbc:mysql://localhost:3306/test" --username=root  --password=password generateChangeLog

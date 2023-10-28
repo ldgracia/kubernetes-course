@@ -1,0 +1,42 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Luis_ (generated)" id="1698518243579-1">
+        <createTable tableName="MiTabla">
+            <column name="columna1" type="INT"/>
+            <column name="columna2" type="VARCHAR(255)"/>
+            <column name="columna3" type="date"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="issac.centeno" id="issac.centeno-130122-001">
+		<createTable tableName="cs_ranges">
+			<column autoIncrement="true" name="sk_range_id" type="int">
+				<constraints primaryKey="true" primaryKeyName="sk_id_range" unique="true" nullable="false" />
+			</column>
+
+			<column name="dn_range" type="int(5)">
+				<constraints nullable="true" primaryKey="false" unique="false" />
+			</column>
+			<column name="dn_status" type="boolean">
+				<constraints nullable="true" primaryKey="false" unique="false" />
+			</column>
+			<column name="dn_rate" type="decimal(10, 2)">
+				<constraints nullable="true" primaryKey="false" unique="false" />
+			</column>
+			<column name="dn_cxa" type="decimal(10, 2)">
+				<constraints nullable="true" primaryKey="false" unique="false" />
+			</column>
+			<column name="dn_residual_12" type="decimal(10, 2)">
+				<constraints nullable="true" primaryKey="false" unique="false" />
+			</column>
+			<column name="dn_residual_24" type="decimal(10, 2)">
+				<constraints nullable="true" primaryKey="false" unique="false" />
+			</column>
+			<column name="dn_residual_36" type="decimal(10, 2)">
+				<constraints nullable="true" primaryKey="false" unique="false" />
+			</column>
+			<column name="dn_residual_48" type="decimal(10, 2)">
+				<constraints nullable="true" primaryKey="false" unique="false" />
+			</column>
+		</createTable>
+	</changeSet>
+</databaseChangeLog>
