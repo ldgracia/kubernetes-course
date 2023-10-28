@@ -6,8 +6,8 @@ ssh aen@c1-storage
 #More details available here: https://help.ubuntu.com/lts/serverguide/network-file-system.html
 #Install NFS Server and create the directory for our exports
 sudo apt install nfs-kernel-server
-sudo mkdir /export/volumes
-sudo mkdir /export/volumes/pod
+sudo mkdir -p /export/volumes
+sudo mkdir -p /export/volumes/pod
 
 
 #Configure our NFS Export in /etc/export for /export/volumes. Using no_root_squash and no_subtree_check to 
