@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-dep
+  labels:
+    name: web-app-alumno-ns
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: gateway-pod
+  template:
+    metadata:
+      labels:
+        app: gateway-pod
+    spec:
+      imagePullSecrets:
+          - name: regcred
+      containers:
+       - name: gateway-web
+         image: harbor.tanzu.udg.mx/web-app/repository/cgsait-gateway:latest
+         imagePullPolicy: Always
+         resources:
+         #solicitud de memoria
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+         #limite de memoria   
+          limits:
+            cpu: "200m"
+            memory: "1024Mi"
+         ports:
+          - containerPort: 8102         
+         env:          
+          - name: SPRING_PROFILES_ACTIVE
+            value: prod
+          - name: TZ
+            value: America/Mexico_City                    
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: gateway-dep-hpa-scale
+spec:
+  maxReplicas: 3 # define max replica count
+  minReplicas: 1 # define min replica count
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: gateway-dep
+  metrics:
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
