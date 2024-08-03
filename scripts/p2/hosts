@@ -1,0 +1,11 @@
+master
+Red Publica 192.168.100.154
+Red Privada 10.0.2.11
+
+worker1
+Red Publica 192.168.100.155
+Red Privada 10.0.2.12
+
+worker2
+Red Publica 192.168.100.156
+Red Privada 10.0.2.13

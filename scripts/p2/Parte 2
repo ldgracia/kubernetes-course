@@ -24,7 +24,7 @@ sudo apt-get install apt-transport-https curl -y
 4. Agregar las llaves del checksum de k8s (All hosts)
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
+deb https://apt.kubernetes.io/ kubernetes-jammy main
 EOF
 
 5. Actualizar el repositorio de paquetes e instalar componentes K8s(All hosts):
