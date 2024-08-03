@@ -6,7 +6,6 @@ metadata:
     app: MyWebApp
     deployment: v1
     tier: prod
-    bussinessTier: finanzas
 spec:
   containers:
   - name: nginx
@@ -22,7 +21,6 @@ metadata:
     app: MyWebApp
     deployment: v1.1
     tier: prod
-    bussinessTier: escolar
 spec:
   containers:
   - name: nginx
@@ -38,7 +36,6 @@ metadata:
     app: MyWebApp
     deployment: v1.1
     tier: qa
-    bussinessTier: patrimonio
 spec:
   containers:
   - name: nginx
@@ -54,7 +51,6 @@ metadata:
     app: MyAdminApp
     deployment: v1
     tier: prod
-    bussinessTier: academica
 spec:
   containers:
   - name: nginx

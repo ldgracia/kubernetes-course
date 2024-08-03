@@ -1,0 +1,101 @@
+Instalacion cluster kubernetes
+
+En VirtualBox crear red nat 192.168.10.0
+
+En el file system crear data store a nivel raiz c:/
+
+una carpeta por cada master node y worker node
+
+En la guia hay pasos que se requieren ejecutar en todos los hosts y otros que solo se requieren ejecutar en los worker Nodes
+
+(all host) para todos los nodos
+(worker nodes) para los nodos worker
+(master node ) para el nodo maestro
+
+1.Actualizar gestor de paquetes (All hosts)
+sudo apt-get update
+
+2. Instalar Docker (All hosts)
+sudo apt-get install docker.io -y
+
+3. Instalar curl y http transports para agregar certificados (All hosts)
+sudo apt-get install apt-transport-https curl -y
+
+4. Agregar las llaves del checksum de k8s (All hosts)
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+5. Actualizar el repositorio de paquetes e instalar componentes K8s(All hosts):
+sudo apt-get update
+sudo apt-get install -y kubelet=1.21.5-00 
+sudo apt-get install -y kubeadm=1.21.5-00 
+sudo apt-get install -y kubectl=1.21.5-00
+sudo apt-mark hold kubelet kubeadm kubectl
+ sudo apt-get install net-tools
+
+6. Modificar las entradas del archivo hosts con las direcciones IP nat de cada nodo (All hosts)
+edit the file "/etc/hosts"
+
+7. Deshabilitar SWAP (All hosts)
+sudo swapoff -a
+edit /etc/fstab to remove the swap entry
+
+8. Iniciar el cluster solo en Master node
+sudo kubeadm init --control-plane-endpoint kube-master:6443 --pod-network-cidr 10.10.0.0/16
+
+9. configurar el cliente kubectl para que se autentique y conecte al cluster(Only on Master node)
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+10. Configurar el CNI (Calico) (Only on Master node)
+curl https://docs.projectcalico.org/manifests/calico.yaml -O
+vi calico.yaml
+Modificar la variable CALICO_IPV4POOL_CIDR y setear el rango de direcciones IP del pod network
+
+11. Generar token para conectar el worker Node al master node (Only on Master node)
+#Create a new Token
+sudo kubeadm token create
+#List Tokens created
+sudo kubeadm token list
+#Find Certificate Hash on Master
+openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | 
+   openssl rsa -pubin -outform der 2>/dev/null | 
+   openssl dgst -sha256 -hex | sed 's/^.* //'
+
+12. Conectar nodos worker al master node (Only on Worker nodes)
+sudo kubeadm join --token TOKEN_ID CONTROL_PLANE_HOSTNAME:CONTROL_PLANE_PORT --discovery-token-ca-cert-hash sha256:HASH
+(Formed using outputs from step 10, treat CAPS as variables to be replaced)
+
+13. Habilitar cargas de trabajo en nodo master (Only on Master Node)
+kubectl taint nodes --all node-role.kubernetes.io/master-
+
+14. Sample Deployment file:
+=========================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+=========================
+
+15. Applicar el deployment:
+kubectl apply -f FILE_NAME

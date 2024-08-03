@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: hello-world
 spec:
-  replicas: 6
+  replicas: 1
   selector:
     matchLabels:
       app: hello-world
@@ -14,11 +14,6 @@ spec:
     spec:
       containers:
       - name: hello-world
-        image: lgracia/dev:testnode
-        env:
-        - name: DEMO_GREETING
-          value: "Hello from the environment"
-        - name: DEMO_FAREWELL
-          value: "Such a sweet sorrow"
+        image: gcr.io/google-samples/hello-app:1.0
         ports:
-        - containerPort: 3000
+        - containerPort: 8080

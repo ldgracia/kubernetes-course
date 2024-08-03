@@ -7,7 +7,7 @@ kubectl apply -f pod.yaml
 
 #We've used exec to launch a shell before, but we can use it to launch ANY program inside a container.
 #Let's use killall to kill the hello-app process inside our container
-kubectl exec -it hello-world-pod -- /bin/bash 
+kubectl exec -it hello-world-pod -- /bin/sh 
 ps
 exit
 

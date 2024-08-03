@@ -20,8 +20,8 @@ kubectl get pod hello-world -v 9
 
 #Start up a kubectl proxy session, this will authenticate use to the API Server
 #Using our local kubeconfig for authentication and settings, updated head to only return 10 lines.
-kubectl proxy --port=8084 &
-curl http://localhost:8084/api/v1/namespaces/default/pods/hello-world | head -n 10
+kubectl proxy &
+curl http://localhost:8001/api/v1/namespaces/default/pods/hello-world | head -n 10
 
 fg
 ctrl+c
@@ -48,8 +48,8 @@ kubectl logs hello-world
 kubectl logs hello-world -v 6
 
 #Start kubectl proxy, we can access the resource URL directly.
-kubectl proxy --port=8084 &
-curl http://localhost:8084/api/v1/namespaces/default/pods/hello-world 
+kubectl proxy &
+curl http://localhost:8001/api/v1/namespaces/default/pods/hello-world/log 
 
 #Kill our kubectl proxy, fg then ctrl+c
 fg

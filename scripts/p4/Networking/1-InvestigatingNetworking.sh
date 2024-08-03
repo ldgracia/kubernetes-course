@@ -8,7 +8,7 @@ kubectl apply -f Deployment.yaml
 
 
 #Get all Pods, we can see each Pod has a unique IP on the Pod Network.
-#Our Pod Network was defined in the first course and we chose 10.10.0.0/16
+#Our Pod Network was defined in the first course and we chose 192.168.0.0/16
 kubectl get pods -o wide
 
 
@@ -29,7 +29,7 @@ exit
 # Calico is using a tunnel interfaces to implement the Pod Network model. 
 # Traffic going to other Pods will be sent into the tunnel interface and directly to the Node running the Pod.
 # For more info on Calico's operations https://docs.projectcalico.org/reference/cni-plugin/configuration
-kubectl describe node worker1 | more
+kubectl describe node c1-cp1 | more
 
 
 #Let's see how the traffic gets to c1-node1 from c1-cp1

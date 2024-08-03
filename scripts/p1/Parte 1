@@ -1,0 +1,30 @@
+# Visualizar estatus cluster 
+kubectl describe cluster
+
+# Visualizar nodos que pertenecen al cluster
+
+kubectl get nodes
+
+kubectl describe nodes
+
+# Visualizar namespaces del cluster unicamente aparece el namespace default
+
+kubectl get namespaces
+
+# visualizar Pods desplegados en el cluster, obtener los pods del namespace default, no aparece nada
+
+kubectl get pods
+
+# Visualizar pods desplegados en el cluster a nivel global, nos aparecen todos los pods del namespace kubesystem
+kubectl get pods -A
+
+# Desplegar pod 
+
+kubectl apply -f ngnix.yaml
+
+# visualizar Pods desplegados en el cluster, obtener los pods del namespace default, no aparece nada
+
+kubectl get pods
+
+
+
