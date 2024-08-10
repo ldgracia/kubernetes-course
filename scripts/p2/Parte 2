@@ -64,6 +64,7 @@ sudo netplan apply
 
 sudo nano /etc/dhcp/dhclient.conf
 
+sudo systemctl restart systemd-networkd
 
 6. Modificar las entradas del archivo hosts con las direcciones IP nat de cada nodo (All hosts)
 edit the file "/etc/hosts"
