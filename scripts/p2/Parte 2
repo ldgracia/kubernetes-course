@@ -22,28 +22,31 @@ sudo apt-get install docker.io -y
 sudo apt-get install apt-transport-https curl -y
 
 4. Agregar las llaves del checksum de k8s (All hosts)
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-jammy main
-EOF
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
 5. Actualizar el repositorio de paquetes e instalar componentes K8s(All hosts):
 sudo apt-get update
-sudo apt-get install -y kubelet=1.21.5-00 
-sudo apt-get install -y kubeadm=1.21.5-00 
-sudo apt-get install -y kubectl=1.21.5-00
+apt-cache madison kubelet
+sudo apt-get install -y kubelet=1.28.12-1.1
+sudo apt-get install -y kubeadm=1.28.12-1.1 
+sudo apt-get install -y kubectl=1.28.12-1.1
 sudo apt-mark hold kubelet kubeadm kubectl
  sudo apt-get install net-tools
 
 6. Modificar las entradas del archivo hosts con las direcciones IP nat de cada nodo (All hosts)
 edit the file "/etc/hosts"
+sudo nano /etc/hosts
+master  192.168.10.9
+worker1 192.168.10.10
+worker2 192.168.10.7
 
 7. Deshabilitar SWAP (All hosts)
 sudo swapoff -a
 edit /etc/fstab to remove the swap entry
 
 8. Iniciar el cluster solo en Master node
-sudo kubeadm init --control-plane-endpoint kube-master:6443 --pod-network-cidr 10.10.0.0/16
+sudo kubeadm init --control-plane-endpoint master:6443 --pod-network-cidr 10.10.0.0/16
 
 9. configurar el cliente kubectl para que se autentique y conecte al cluster(Only on Master node)
 mkdir -p $HOME/.kube
@@ -51,8 +54,31 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 10. Configurar el CNI (Calico) (Only on Master node)
-curl https://docs.projectcalico.org/manifests/calico.yaml -O
-vi calico.yaml
+Install the operator on your cluster.
+
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.1/manifests/tigera-operator.yaml
+
+
+Download the custom resources necessary to configure Calico.
+
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.28.1/manifests/custom-resources.yaml -O
+
+
+If you wish to customize the Calico install, customize the downloaded custom-resources.yaml manifest locally.
+
+Create the manifest to install Calico.
+
+kubectl create -f custom-resources.yaml
+
+Verify Calico installation in your cluster.
+
+watch kubectl get pods -n calico-system
+
+You should see a result similar to the below.
+
+NAMESPACE     NAME                READY   STATUS                  RESTARTS         AGE
+kube-system   calico-node-txngh   1/1     Running                   0              54s
+
 Modificar la variable CALICO_IPV4POOL_CIDR y setear el rango de direcciones IP del pod network
 
 11. Generar token para conectar el worker Node al master node (Only on Master node)
