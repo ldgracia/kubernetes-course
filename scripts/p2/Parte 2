@@ -34,6 +34,37 @@ sudo apt-get install -y kubectl=1.28.12-1.1
 sudo apt-mark hold kubelet kubeadm kubectl
  sudo apt-get install net-tools
 
+5.1 opcional (all hosts)
+si no se configuraron todas las tarjetas de red, realizar esta configuracion
+ejecutar ip a
+
+obtienes una salida asi:
+
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    inet 192.168.100.162/24 metric 100 brd 192.168.100.255 scope global dynamic enp0s3
+     
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    
+    inet 192.168.10.9/24 metric 100 brd 192.168.10.255 scope global dynamic enp0s8
+     
+tomar nota de los nombres de las interfaces y añadirlos al netplan:
+
+sudo nano /etc/netplan/01-netcfg.yaml
+
+
+network:
+  version: 2
+  ethernets:
+    enp0s3:
+      dhcp4: true
+    enp0s8:
+      dhcp4: true
+
+sudo netplan apply
+
+sudo nano /etc/dhcp/dhclient.conf
+
+
 6. Modificar las entradas del archivo hosts con las direcciones IP nat de cada nodo (All hosts)
 edit the file "/etc/hosts"
 sudo nano /etc/hosts
