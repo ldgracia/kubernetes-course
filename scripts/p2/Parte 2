@@ -157,3 +157,26 @@ spec:
 
 15. Applicar el deployment:
 kubectl apply -f FILE_NAME
+
+16. para obtener la direccion del POD 
+
+kubectl get pod <nombre-del-pod> -n <nombre-del-namespace> -o jsonpath='{.status.podIP}'
+
+para obtener la direccion completa
+echo "$(kubectl get pod <nombre-del-pod> -n <nombre-del-namespace> -o jsonpath='{.status.podIP}' | sed 's/\./-/g').<nombre-del-namespace>.pod.cluster.local"
+
+conectarse a un pod
+kubectl get pods -o wide
+
+kubectl exec -it nginx-deployment-7c5ddbdf54-6b5r6 -- /bin/bash 
+
+opcional instalar ping ejecutar dentro del contenedor 
+apt update 
+apt install inetutils-ping
+
+ejecutar desde un pod
+
+ping 10-10-189-101.default.pod.cluster.local
+
+
+
