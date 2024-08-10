@@ -4,6 +4,8 @@ metadata:
   name: nginx-deployment
   labels:
     app: nginx
+    dominio: apps
+    area: finanzas
 spec:
   replicas: 1
   selector:
