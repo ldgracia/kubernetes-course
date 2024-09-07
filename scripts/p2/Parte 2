@@ -177,6 +177,3 @@ apt install inetutils-ping
 ejecutar desde un pod
 
 ping 10-10-189-101.default.pod.cluster.local
-
-
-

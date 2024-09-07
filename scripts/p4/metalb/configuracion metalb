@@ -1,0 +1,41 @@
+Paso 1: Descargar el binario de Helm
+Descarga la versión más reciente de Helm ejecutando el siguiente comando:
+bash
+Copiar código
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+Este script se encarga de descargar la versión más reciente de Helm y configurarlo en tu sistema.
+
+Paso 2: Verificar la instalación
+Una vez completada la instalación, verifica que Helm se haya instalado correctamente ejecutando:
+
+bash
+Copiar código
+helm version
+Deberías ver una salida similar a esta, que indica la versión instalada:
+
+css
+Copiar código
+version.BuildInfo{Version:"v3.x.x", GitCommit:"<hash>", GitTreeState:"clean", GoVersion:"go1.x.x"}
+Paso 3: Configurar repositorios de Helm
+Helm funciona con "charts", que son plantillas de Kubernetes para desplegar aplicaciones. Para comenzar a usar Helm, es recomendable agregar un repositorio de charts, como el repositorio oficial de Helm:
+
+bash
+Copiar código
+helm repo add stable https://charts.helm.sh/stable
+Si necesitas un repositorio más actualizado y ampliamente utilizado, puedes agregar el repositorio de Bitnami, por ejemplo:
+
+bash
+Copiar código
+helm repo add bitnami https://charts.bitnami.com/bitnami
+Actualiza la lista de charts disponibles:
+
+bash
+Copiar código
+helm repo update
+Paso 4: Usar Helm para desplegar una aplicación
+Como ejemplo, puedes instalar una aplicación como nginx utilizando Helm de la siguiente manera:
+
+bash
+Copiar código
+helm install my-nginx bitnami/nginx
+Este comando desplegará una instancia de nginx en tu clúster de Kubernetes.
